@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`fancy-carousel`
+Carousel which gives you options for multiple fancy transistions and different ways to include images.
+
+@demo demo/index.html 
+-->
+
+<dom-module id="fancy-carousel">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'fancy-carousel',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'fancy-carousel',
+        },
+      },
+
+    });
+  </script>
+</dom-module>

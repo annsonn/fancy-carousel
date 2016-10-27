@@ -1,6 +1,6 @@
 {
   "name": "fancy-carousel",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Carousel which gives you options for multiple fancy transistions and different ways to include images.",
   "main": "fancy-carousel.html",
   "keywords": [

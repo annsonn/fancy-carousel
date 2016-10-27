@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<script src="image-search.js"></script>
 
 <!--
 `fancy-carousel`
@@ -98,6 +99,18 @@ Carousel which gives you options for multiple fancy transistions and different w
           observer: '_selectedChanged'
         },
 
+        imageTopic: {
+          type: String
+        },
+
+        searchEngineCx: {
+          type: String
+        },
+
+        apiKey: {
+          type: String
+        },
+
         transitionType: {
           value: 'default',
           type: String,
@@ -131,6 +144,37 @@ Carousel which gives you options for multiple fancy transistions and different w
         if (this.noControls) {
           this.$.prevBtn.style.display = 'none';
           this.$.nextBtn.style.display = 'none';
+        }
+        if (this.imageTopic) {
+          this._loadCustomImages(this.imageTopic);
+        }
+      },
+
+      _loadCustomImages: function(searchTerm) {
+        var that = this;
+        var imgUrls;
+        findImages(searchTerm, this.searchEngineCx, this.apiKey, function(urls) {
+          if (!urls) {
+            console.log('Error loading images');
+            return;
+          }
+          imgUrls = urls;
+          console.log(imgUrls);
+          that._addImageNodes(imgUrls);
+        });
+      },
+
+      _addImageNodes: function(imgUrls) {
+        var numUrls = imgUrls.length;
+        for (var i=0; i<numUrls; i++) {
+          if (!imgUrls[i]) {
+            continue;
+          }
+          var newImage = document.createElement('img');
+          newImage.setAttribute('src', imgUrls[i]);
+          newImage.style.width = '100%';
+          newImage.style.height = '100%';
+          Polymer.dom(this).appendChild(newImage);
         }
       },
 

@@ -103,6 +103,8 @@ Carousel which gives you options for multiple fancy transistions and different w
 
       is: 'fancy-carousel',
 
+      isWorking: false,
+
       properties: {
         selected: {
           observer: '_selectedChanged'
@@ -138,9 +140,13 @@ Carousel which gives you options for multiple fancy transistions and different w
         }
       },
 
-      _resetZIndex: function(elements) {
+      _resetZIndex: function(elements, current) {
         for (var i = 0; i < elements.length; i++) {
-          elements[i].style.zIndex = "1";
+          if (current && current.src === elements[i].src) {
+            elements[i].style.zIndex = "2";
+          } else {
+            elements[i].style.zIndex = "1";
+          }
         }
       },
 
@@ -157,6 +163,20 @@ Carousel which gives you options for multiple fancy transistions and different w
         if (this.imageTopic) {
           this._loadCustomImages(this.imageTopic);
         }
+
+        this._preloadAnimationSprites();
+      },
+
+      _preloadAnimationSprites: function() {
+        var dummyDiv1 = document.createElement('div');
+        dummyDiv1.style.backgroundImage = "url('../animation-sprites/nature-sprite.png')";
+        dummyDiv1.style.display = "none";
+        Polymer.dom(this).appendChild(dummyDiv1);
+
+        var dummyDiv2 = document.createElement('div');
+        dummyDiv2.style.backgroundImage = "url('../animation-sprites/urban-sprite.png')";
+        dummyDiv2.style.display = "none";
+        Polymer.dom(this).appendChild(dummyDiv2);
       },
 
       _loadCustomImages: function(searchTerm) {
@@ -211,6 +231,9 @@ Carousel which gives you options for multiple fancy transistions and different w
         if (this.transitionType === 'spread' || this.transitionType === 'paint') {
           this._spread(direction, selected, nextElem);
         } else {
+          if (this.isWorking) return;
+          this.isWorking = true;
+
           nextElem.style.zIndex = "50";
 
           var oldSelected = selected;
@@ -222,13 +245,19 @@ Carousel which gives you options for multiple fancy transistions and different w
           this._translateX(oldSelected, -this.offsetWidth*direction, true /* transition */);
           this._translateX(nextElem, 0, true /* transition */);
 
-          this._resetZIndex(Polymer.dom(this).children);
+          this._resetZIndex(Polymer.dom(this).children, selected);
           nextElem.style.zIndex = "100";
-        } 
+
+          this.isWorking = false;
+        }
       },
 
       _spread: function(direction, selected, nextElem) {
         var self = this;
+
+        if (self.isWorking) return;
+        self.isWorking = true;
+
         nextElem.style.zIndex = "50";
         selected.className = this.transitionType;
         setTimeout(function() {
@@ -236,6 +265,7 @@ Carousel which gives you options for multiple fancy transistions and different w
           self._resetZIndex(Polymer.dom(self).children);
           nextElem.style.zIndex = "100";
           self.selected = nextElem;
+          self.isWorking = false;
         }, 1400);
       },
 

@@ -58,6 +58,15 @@ Carousel which gives you options for multiple fancy transistions and different w
         animation: mask-play 1.4s steps(22) forwards;
       }
 
+      #content-wrapper ::content > .paint {
+        -webkit-mask: url(./animation-sprites/urban-sprite.png);
+        mask: url(./animation-sprites/urban-sprite.png);
+        -webkit-mask-size: 3000% 100%;
+        mask-size: 3000% 100%;
+        -webkit-animation: mask-play 1.4s steps(29) forwards;
+        animation: mask-play 1.4s steps(29) forwards;
+      }
+
       @-webkit-keyframes mask-play {
         from {
         -webkit-mask-position: 0% 0;
@@ -199,7 +208,9 @@ Carousel which gives you options for multiple fancy transistions and different w
       },
 
       _startTransition: function(direction, selected, nextElem) {
-        if (this.transitionType === 'default'){
+        if (this.transitionType === 'spread' || this.transitionType === 'paint') {
+          this._spread(direction, selected, nextElem);
+        } else {
           nextElem.style.zIndex = "50";
 
           var oldSelected = selected;
@@ -213,15 +224,13 @@ Carousel which gives you options for multiple fancy transistions and different w
 
           this._resetZIndex(Polymer.dom(this).children);
           nextElem.style.zIndex = "100";
-        } else if (this.transitionType === 'spread') {
-          this._spread(direction, selected, nextElem);
-        }
+        } 
       },
 
       _spread: function(direction, selected, nextElem) {
         var self = this;
         nextElem.style.zIndex = "50";
-        selected.className = "spread";
+        selected.className = this.transitionType;
         setTimeout(function() {
           selected.className = "";
           self._resetZIndex(Polymer.dom(self).children);

@@ -152,7 +152,7 @@ Carousel which gives you options for multiple fancy transistions and different w
 
       attached: function()  {
         this._resetZIndex(Polymer.dom(this).children);
-        this.selected = Polymer.dom(this).firstElementChild;
+        this.selected = Polymer.dom(this).querySelectorAll('img')[0];
         if (this.selected) {
           this.selected.style.zIndex = "100";
         }
@@ -170,12 +170,14 @@ Carousel which gives you options for multiple fancy transistions and different w
       _preloadAnimationSprites: function() {
         var dummyDiv1 = document.createElement('div');
         dummyDiv1.style.backgroundImage = "url('../animation-sprites/nature-sprite.png')";
-        dummyDiv1.style.display = "none";
+        dummyDiv1.style.visibility = "hidden";
+        dummyDiv1.setAttribute("class", "dummy");
         Polymer.dom(this).appendChild(dummyDiv1);
 
         var dummyDiv2 = document.createElement('div');
         dummyDiv2.style.backgroundImage = "url('../animation-sprites/urban-sprite.png')";
-        dummyDiv2.style.display = "none";
+        dummyDiv2.style.visibility = "hidden";
+        dummyDiv2.setAttribute("class", "dummy");
         Polymer.dom(this).appendChild(dummyDiv2);
       },
 
@@ -212,6 +214,9 @@ Carousel which gives you options for multiple fancy transistions and different w
       */
       previous: function() {
         var elem = this.selected.previousElementSibling;
+        while (elem && elem.getAttribute("class") === "dummy") {
+          elem = elem.previousElementSibling;
+        }
         if (elem && !this._touchDir) {
           this._startTransition(-1, this.selected, elem);
         }
@@ -222,6 +227,9 @@ Carousel which gives you options for multiple fancy transistions and different w
       */
       next: function() {
         var elem = this.selected.nextElementSibling;
+        while (elem && elem.getAttribute("class") === "dummy") {
+          elem = elem.nextElementSibling;
+        }
         if (elem && !this._touchDir) {
           this._startTransition(1, this.selected, elem);
         }

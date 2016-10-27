@@ -256,13 +256,21 @@ Carousel which gives you options for multiple fancy transistions and different w
       * Changes the carousel to the next image
       */
       next: function() {
+        var elem = this._getNextElement();
+        if (elem && !this._touchDir) {
+          this._startTransition(1, this.selected, elem);
+        }
+      },
+
+      _getNextElement: function() {
         var elem = this.selected.nextElementSibling;
         while (elem && elem.getAttribute("class") === "dummy") {
           elem = elem.nextElementSibling;
         }
-        if (elem && !this._touchDir) {
-          this._startTransition(1, this.selected, elem);
+        if (!elem) {
+          elem = Polymer.dom(this).querySelectorAll('img')[0];
         }
+        return elem;
       },
 
       _startTransition: function(direction, selected, nextElem) {

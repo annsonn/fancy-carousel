@@ -7,6 +7,8 @@ before_script:
 node_js: stable
 addons:
   firefox: '46'
+  codeclimate:
+    repo_token: 
   apt:
     sources:
     - google-chrome
@@ -15,4 +17,6 @@ addons:
   sauce_connect: true
 script:
 - xvfb-run wct
+after_script:
+- codeclimate-test-reporter < lcov.info
 dist: trusty

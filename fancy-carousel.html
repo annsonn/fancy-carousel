@@ -133,15 +133,19 @@ Carousel which gives you options for multiple fancy transistions and different w
 
 
       _selectedChanged: function(selected, oldSelected) {
-        if (oldSelected) oldSelected.removeAttribute('selected');
-        if (selected) selected.setAttribute('selected', '');
+        if (oldSelected) {
+          oldSelected.removeAttribute('selected');
+        }
+        if (selected) {
+          selected.setAttribute('selected', '');
+          this.$.prevBtn.disabled = !selected.previousElementSibling;
+          this.$.nextBtn.disabled = !selected.nextElementSibling;
 
-        this.$.prevBtn.disabled = !selected.previousElementSibling;
-        this.$.nextBtn.disabled = !selected.nextElementSibling;
+          this._loadImage(selected);
+          this._loadImage(selected.previousElementSibling);
+          this._loadImage(selected.nextElementSibling);
+        }
 
-        this._loadImage(selected);
-        this._loadImage(selected.previousElementSibling);
-        this._loadImage(selected.nextElementSibling);
       },
 
       _loadImage: function(img) {

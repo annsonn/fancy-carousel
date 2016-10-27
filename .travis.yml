@@ -8,7 +8,7 @@ node_js: stable
 addons:
   firefox: '46'
   codeclimate:
-    repo_token: 
+    repo_token: f3f514915d46237814d41224645d066b73d6f57bfbdf5d914f15419120ab51cf
   apt:
     sources:
     - google-chrome

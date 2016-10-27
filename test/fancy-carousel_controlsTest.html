@@ -28,10 +28,10 @@
             element = fixture('control-test');
         });
 
-        test('instantiating the element works', function() {
+        test('buttons should be disabled if only 1 picture', function() {
           assert.equal(element.is, 'fancy-carousel');
           assert.equal(true, element.$$('#prevBtn').disabled);
-          assert.equal(false, element.$$('#nextBtn').disabled);
+          assert.equal(true, element.$$('#nextBtn').disabled);
         });
       });
     </script>

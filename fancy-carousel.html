@@ -76,9 +76,16 @@ Carousel which gives you options for multiple fancy transistions and different w
         }
       },
 
-      ready: function() {
+      attached: function() {
+        this.selected = Polymer.dom(this).firstElementChild;
+        if (this.searchterm) {
+          this._loadCustomImages(this.searchterm);
+        }
+      },
+
+      _loadCustomImages: function(searchTerm) {
+        var that = this;
         var imgUrls;
-        alert('searchTerm = ' + this.searchterm);
         findImages(this.searchterm, function(urls) {
           if (!urls) {
             console.log('Error loading images');
@@ -86,11 +93,17 @@ Carousel which gives you options for multiple fancy transistions and different w
           }
           imgUrls = urls;
           console.log(imgUrls);
+          that._addImageNodes(imgUrls);
         });
       },
 
-      attached: function()  {
-        this.selected = Polymer.dom(this).firstElementChild;
+      _addImageNodes: function(imgUrls) {
+        var numUrls = imgUrls.length;
+        for (var i=0; i<numUrls; i++) {
+          var newImage = document.createElement('img');
+          newImage.setAttribute('src', imgUrls[i]);
+          Polymer.dom(this).appendChild(newImage);
+        }
       },
 
       previous: function() {

@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<script src="image-search.js"></script>
 
 <!--
 `fancy-carousel`
@@ -68,7 +69,24 @@ Carousel which gives you options for multiple fancy transistions and different w
       properties: {
         selected: {
           observer: '_selectedChanged'
+        },
+        searchterm: {
+          type: String,
+          notify: true
         }
+      },
+
+      ready: function() {
+        var imgUrls;
+        alert('searchTerm = ' + this.searchterm);
+        findImages(this.searchterm, function(urls) {
+          if (!urls) {
+            console.log('Error loading images');
+            return;
+          }
+          imgUrls = urls;
+          console.log(imgUrls);
+        });
       },
 
       attached: function()  {

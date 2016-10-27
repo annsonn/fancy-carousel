@@ -16,3 +16,11 @@ Carousel which gives you options for multiple fancy transistions and different w
 </fancy-carousel>
 ```
 
+| Properties      | Type    | Comment                                                                                  |
+| --------------- |:-------:| ---------------------------------------------------------------------------------------- |
+| apiKey          | String  | API key for Google image search                                                          |
+| imageTopic      | String  | The topic for image search                                                               |
+| noControls      | Boolean | Do not display control buttons for left/right (Default: false)                           |
+| searchEngineCx  | String  | CX key for Google                                                                        |
+| transitionTimer | Number  | Timer for transitioning to the next slide                                                |
+| transitionType  | String  | Type of transition animation (Currently available types: spread, paint, shift, collapse) |

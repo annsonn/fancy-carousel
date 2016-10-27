@@ -1,13 +1,6 @@
 {
   "verbose": true,
   "plugins": {
-    "istanbul": {
-      "dir": "./coverage",
-      "reporters": ["text-summary", "lcov"],
-      "include": [
-        "**/*.js"
-      ]
-    },
     "local": {
       "browsers": ["chrome"]
     }

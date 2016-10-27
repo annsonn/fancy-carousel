@@ -81,6 +81,9 @@ Carousel which gives you options for multiple fancy transistions and different w
         this.selected = Polymer.dom(this).firstElementChild;
       },
 
+      /**
+      * Changes the carousel to the previous image
+      */
       previous: function() {
         var elem = this.selected.previousElementSibling;
         if (elem && !this._touchDir) {
@@ -88,6 +91,9 @@ Carousel which gives you options for multiple fancy transistions and different w
         }
       },
 
+      /**
+      * Changes the carousel to the next image
+      */
       next: function() {
         var elem = this.selected.nextElementSibling;
         if (elem && !this._touchDir) {

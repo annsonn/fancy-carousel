@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>fancy-carousel test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../fancy-carousel.html">
+  </head>
+  <body>
+
+    <test-fixture id="two-image-carousel">
+      <template>
+        <fancy-carousel transition-timer=1>
+            <img id="pic1" src="https://app-layout-assets.appspot.com/assets/bg1.jpg">
+            <img id="pic2" src="https://app-layout-assets.appspot.com/assets/bg2.jpg">
+        </fancy-carousel>
+      </template>
+    </test-fixture>
+
+
+    <script>
+      suite('fancy-carousel', function() {
+
+        test('testing the timer', function() {
+            var clock = sinon.useFakeTimers();
+            var element = fixture('two-image-carousel');
+
+            assert.equal("pic1", element.selected.id);
+
+            clock.tick(1000);
+
+            assert.equal("pic2", element.selected.id);
+            clock.restore();
+        });
+
+      });
+    </script>
+  </body>
+</html>

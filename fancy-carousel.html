@@ -70,7 +70,7 @@ Carousel which gives you options for multiple fancy transistions and different w
         selected: {
           observer: '_selectedChanged'
         },
-        searchterm: {
+        imageTopic: {
           type: String,
           notify: true
         }
@@ -78,15 +78,16 @@ Carousel which gives you options for multiple fancy transistions and different w
 
       attached: function() {
         this.selected = Polymer.dom(this).firstElementChild;
-        if (this.searchterm) {
-          this._loadCustomImages(this.searchterm);
+        if (this.imageTopic) {
+          this._loadCustomImages(this.imageTopic);
         }
       },
 
       _loadCustomImages: function(searchTerm) {
+        alert('searching for searchTerm: ' + searchTerm);
         var that = this;
         var imgUrls;
-        findImages(this.searchterm, function(urls) {
+        findImages(searchTerm, function(urls) {
           if (!urls) {
             console.log('Error loading images');
             return;
@@ -135,13 +136,6 @@ Carousel which gives you options for multiple fancy transistions and different w
           this._translateX(oldSelected, -this.offsetWidth, true /* transition */);
           this._translateX(elem, 0, true /* transition */);
         }
-      },
-
-      _installListeners: function() {
-        this.addEventListener('transitionend', this._resetChildrenStyles.bind(this));
-        this.addEventListener('touchstart', this._touchstart.bind(this));
-        this.addEventListener('touchmove', this._touchmove.bind(this));
-        this.addEventListener('touchend', this._touchend.bind(this));
       },
 
       _resetChildrenStyles: function() {

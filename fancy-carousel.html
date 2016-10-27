@@ -129,13 +129,13 @@ Carousel which gives you options for multiple fancy transistions and different w
         }
       },
 
-      _installListeners: function() {
-        this.addEventListener('transitionend', this._resetChildrenStyles.bind(this));
-        this.addEventListener('touchstart', this._touchstart.bind(this));
-        this.addEventListener('touchmove', this._touchmove.bind(this));
-        this.addEventListener('touchend', this._touchend.bind(this));
+      listeners: {
+        'transitionend': '_resetChildrenStyles',
+        'touchstart': '_touchstart',
+        'touchmove': '_touchmove',
+        'touchend': '_touchend'
       },
-
+      
       _resetChildrenStyles: function() {
         var elem = this.firstElementChild;
         while (elem) {

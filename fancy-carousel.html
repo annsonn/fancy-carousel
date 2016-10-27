@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <script src="image-search.js"></script>
 
+
 <!--
 `fancy-carousel`
 Carousel which gives you options for multiple fancy transistions and different ways to include images.
@@ -50,8 +51,6 @@ Carousel which gives you options for multiple fancy transistions and different w
       }
 
       #content-wrapper ::content > .spread {
-        -webkit-mask: url(animation-sprites/nature-sprite.png);
-        mask: url(animation-sprites/nature-sprite.png);
         -webkit-mask-size: 2300% 100%;
         mask-size: 2300% 100%;
         -webkit-animation: mask-play 1.4s steps(22) forwards;
@@ -59,8 +58,6 @@ Carousel which gives you options for multiple fancy transistions and different w
       }
 
       #content-wrapper ::content > .paint {
-        -webkit-mask: url(animation-sprites/urban-sprite.png);
-        mask: url(animation-sprites/urban-sprite.png);
         -webkit-mask-size: 3000% 100%;
         mask-size: 3000% 100%;
         -webkit-animation: mask-play 1.4s steps(29) forwards;
@@ -185,27 +182,43 @@ Carousel which gives you options for multiple fancy transistions and different w
         this._preloadAnimationSprites();
       },
 
+      _getNatureSpriteUrl: function() {
+        return "url('" + this.resolveUrl('animation-sprites/nature-sprite.png') + "')";
+      },
+
+      _getUrbanSpriteUrl: function() {
+        return "url('" + this.resolveUrl('animation-sprites/urban-sprite.png') + "')";
+      },
+
+      _getShiftSpriteUrl: function() {
+        return "url('" + this.resolveUrl('animation-sprites/building-sprite.png') + "')";
+      },
+
+      _getCollaspeSpriteUrl: function() {
+        return "url('" + this.resolveUrl('animation-sprites/building-sprite-2.png') + "')";
+      },
+
       _preloadAnimationSprites: function() {
         var dummyDiv1 = document.createElement('div');
-        dummyDiv1.style.backgroundImage = "url('../animation-sprites/nature-sprite.png')";
+        dummyDiv1.style.backgroundImage = this._getNatureSpriteUrl();
         dummyDiv1.style.visibility = "hidden";
         dummyDiv1.setAttribute("class", "dummy");
         Polymer.dom(this).appendChild(dummyDiv1);
 
         var dummyDiv2 = document.createElement('div');
-        dummyDiv2.style.backgroundImage = "url('../animation-sprites/urban-sprite.png')";
+        dummyDiv2.style.backgroundImage = this._getUrbanSpriteUrl();
         dummyDiv2.style.visibility = "hidden";
         dummyDiv2.setAttribute("class", "dummy");
         Polymer.dom(this).appendChild(dummyDiv2);
 
         var dummyDiv3 = document.createElement('div');
-        dummyDiv3.style.backgroundImage = "url('../animation-sprites/building-sprite.png')";
+        dummyDiv3.style.backgroundImage = this._getShiftSpriteUrl();
         dummyDiv3.style.visibility = "hidden";
         dummyDiv3.setAttribute("class", "dummy");
         Polymer.dom(this).appendChild(dummyDiv3);
 
         var dummyDiv4 = document.createElement('div');
-        dummyDiv4.style.backgroundImage = "url('../animation-sprites/building-sprite-2.png')";
+        dummyDiv4.style.backgroundImage = this._getCollaspeSpriteUrl();
         dummyDiv4.style.visibility = "hidden";
         dummyDiv4.setAttribute("class", "dummy");
         Polymer.dom(this).appendChild(dummyDiv4);
@@ -301,8 +314,25 @@ Carousel which gives you options for multiple fancy transistions and different w
 
         nextElem.style.zIndex = "50";
         selected.className = this.transitionType;
+        
+        if (this.transitionType === 'spread') {
+          selected.style.mask = this._getNatureSpriteUrl();
+          selected.style.webkitMask = this._getNatureSpriteUrl();
+        } else if (this.transitionType === 'paint') {
+          selected.style.mask = this._getUrbanSpriteUrl();
+          selected.style.webkitMask = this._getUrbanSpriteUrl();
+        } else if (this.transitionType === 'collapse') {
+          selected.style.mask = this._getCollaspeSpriteUrl();
+          selected.style.webkitMask = this._getCollaspeSpriteUrl();
+        } else if (this.transitionType === 'shift') {
+          selected.style.mask = this._getShiftSpriteUrl();
+          selected.style.webkitMask = this._getShiftSpriteUrl();
+        }
+
         setTimeout(function() {
           selected.className = "";
+          selected.style.mask = "";
+          selected.style.webkitMask = "";
           self._resetZIndex(Polymer.dom(self).children);
           nextElem.style.zIndex = "100";
           self.selected = nextElem;

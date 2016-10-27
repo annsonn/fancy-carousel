@@ -68,6 +68,12 @@ Carousel which gives you options for multiple fancy transistions and different w
       properties: {
         selected: {
           observer: '_selectedChanged'
+        },
+        
+        transitionType: {
+          value: 'default',
+          type: String,
+          notify: true
         }
       },
 
@@ -77,33 +83,28 @@ Carousel which gives you options for multiple fancy transistions and different w
 
       previous: function() {
         var elem = this.selected.previousElementSibling;
-        var elem = this.selected.previousElementSibling;
         if (elem && !this._touchDir) {
-          // Setup transition start state
-          var oldSelected = this.selected;
-          this._translateX(oldSelected, 0);
-          this._translateX(elem, -this.offsetWidth);
-
-          // Start the transition
-          this.selected = elem;
-          this._translateX(oldSelected, this.offsetWidth, true /* transition */);
-          this._translateX(elem, 0, true /* transition */);
+          this._startTransition(-1, this.selected, elem);
         }
       },
 
       next: function() {
         var elem = this.selected.nextElementSibling;
         if (elem && !this._touchDir) {
-          // Setup transition start state
-          var oldSelected = this.selected;
-          this._translateX(oldSelected, 0);
-          this._translateX(elem, this.offsetWidth);
-
-          // Start the transition
-          this.selected = elem;
-          this._translateX(oldSelected, -this.offsetWidth, true /* transition */);
-          this._translateX(elem, 0, true /* transition */);
+          this._startTransition(1, this.selected, elem);
         }
+      },
+
+      _startTransition: function(direction, selected, nextElem) {
+        var oldSelected = selected;
+        this._translateX(oldSelected, 0);
+        this._translateX(nextElem, this.offsetWidth*direction);
+
+        // Start the transition
+        this.selected = nextElem;
+        this._translateX(oldSelected, -this.offsetWidth*direction, true /* transition */);
+        this._translateX(nextElem, 0, true /* transition */);
+
       },
 
       _installListeners: function() {
@@ -123,6 +124,12 @@ Carousel which gives you options for multiple fancy transistions and different w
         }
       },
 
+      _translateX: function(elem, x, transition) {
+        elem.style.display = 'block';
+        elem.style.transition = transition ? 'transform 0.2s' : '';
+        elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+      },
+
 
       _selectedChanged: function(selected, oldSelected) {
         if (oldSelected) oldSelected.removeAttribute('selected');
@@ -140,12 +147,6 @@ Carousel which gives you options for multiple fancy transistions and different w
         if (img && !img.src) {
           img.src = img.getAttribute('data-src');
         }
-      },
-
-      _translateX: function(elem, x, transition) {
-        elem.style.display = 'block';
-        elem.style.transition = transition ? 'transform 0.2s' : '';
-        elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
       },
 
       _touchstart: function(event) {

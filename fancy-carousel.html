@@ -71,13 +71,8 @@ Carousel which gives you options for multiple fancy transistions and different w
         }
       },
 
-      ready: function() {
-      },
-
       attached: function()  {
-        var firstChild = Polymer.dom(this).firstElementChild;
-        this.selected = firstChild;
-        console.log('element attached', firstChild);
+        this.selected = Polymer.dom(this).firstElementChild;
       },
 
       previous: function() {

@@ -74,11 +74,26 @@ Carousel which gives you options for multiple fancy transistions and different w
           value: 'default',
           type: String,
           notify: true
+        },
+
+        noControls: {
+          type: Boolean,
+          value: false
+        },
+
+        transitionTimer: {
+          type: Number,
+          value: 0,
+          observer: '_timerChanged'
         }
       },
 
       attached: function()  {
         this.selected = Polymer.dom(this).firstElementChild;
+        if (this.noControls) {
+          this.$.prevBtn.style.display = 'none';
+          this.$.nextBtn.style.display = 'none';
+        }
       },
 
       /**
@@ -137,6 +152,14 @@ Carousel which gives you options for multiple fancy transistions and different w
         elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
       },
 
+      _timerChanged: function(newValue, oldValue) {
+        var that = this;
+        if (newValue != 0) {
+          setInterval(function() {
+            this.next();
+          }, newValue*1000);
+        }
+      },
 
       _selectedChanged: function(selected, oldSelected) {
         if (oldSelected) {

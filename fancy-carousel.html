@@ -4,7 +4,7 @@
 `fancy-carousel`
 Carousel which gives you options for multiple fancy transistions and different ways to include images.
 
-@demo demo/index.html 
+@demo demo/index.html
 -->
 
 <dom-module id="fancy-carousel">
@@ -14,11 +14,6 @@ Carousel which gives you options for multiple fancy transistions and different w
         display: block;
         position: relative;
         overflow: hidden;
-      }
-
-      /* :slotted() selector refers to the immediate children that are in that slot */
-      div > ::slotted(:not([selected])) {
-        display: none;
       }
 
       button {
@@ -41,18 +36,51 @@ Carousel which gives you options for multiple fancy transistions and different w
 
       #prevBtn {
         left: 12px;
+        z-index: 1000;
       }
 
       #nextBtn {
         right: 12px;
+        z-index: 1000;
       }
 
       button[disabled] {
         opacity: 0.4;
       }
+
+      #content-wrapper ::content > .spread {
+        -webkit-mask: url(./animation-sprites/nature-sprite.png);
+        mask: url(./animation-sprites/nature-sprite.png);
+        -webkit-mask-size: 2300% 100%;
+        mask-size: 2300% 100%;
+        -webkit-animation: mask-play 1.4s steps(22) forwards;
+        animation: mask-play 1.4s steps(22) forwards;
+      }
+
+      @-webkit-keyframes mask-play {
+        from {
+        -webkit-mask-position: 0% 0;
+        mask-position: 0% 0;
+        }
+        to {
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+        }
+      }
+
+      @keyframes mask-play {
+        from {
+        -webkit-mask-position: 0% 0;
+        mask-position: 0% 0;
+        }
+        to {
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+        }
+      }
     </style>
 
-    <div>
+    <div id="content-wrapper">
       <content></content>
     </div>
 
@@ -69,16 +97,24 @@ Carousel which gives you options for multiple fancy transistions and different w
         selected: {
           observer: '_selectedChanged'
         },
-        
+
         transitionType: {
           value: 'default',
           type: String,
           notify: true
+        },
+      },
+
+      _resetZIndex: function(elements) {
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].style.zIndex = "1";
         }
       },
 
       attached: function()  {
+        this._resetZIndex(Polymer.dom(this).children);
         this.selected = Polymer.dom(this).firstElementChild;
+        this.selected.style.zIndex = "100";
       },
 
       previous: function() {
@@ -97,6 +133,8 @@ Carousel which gives you options for multiple fancy transistions and different w
 
       _startTransition: function(direction, selected, nextElem) {
         if (this.transitionType === 'default'){
+          nextElem.style.zIndex = "50";
+
           var oldSelected = selected;
           this._translateX(oldSelected, 0);
           this._translateX(nextElem, this.offsetWidth*direction);
@@ -105,7 +143,24 @@ Carousel which gives you options for multiple fancy transistions and different w
           this.selected = nextElem;
           this._translateX(oldSelected, -this.offsetWidth*direction, true /* transition */);
           this._translateX(nextElem, 0, true /* transition */);
+
+          this._resetZIndex(Polymer.dom(this).children);
+          nextElem.style.zIndex = "100";
+        } else if (this.transitionType === 'spread') {
+          this._spread(direction, selected, nextElem);
         }
+      },
+
+      _spread: function(direction, selected, nextElem) {
+        var self = this;
+        nextElem.style.zIndex = "50";
+        selected.className = "spread";
+        setTimeout(function() {
+          selected.className = "";
+          self._resetZIndex(Polymer.dom(self).children);
+          nextElem.style.zIndex = "100";
+          self.selected = nextElem;
+        }, 1400);
       },
 
       _installListeners: function() {

@@ -1,7 +1,7 @@
 var searchUrlBefore = 'https://www.googleapis.com/customsearch/v1?q=';
 var searchUrlAfter = '&fileType=jpg,png,bmp&imgColorType=color&num=5';
 
-var doSearch = false;
+var doSearch = true;
 var defaultResults = [
     'https://i.ytimg.com/vi/a6KGPBflhiM/hqdefault.jpg',
     'https://i.ytimg.com/vi/p336IIjZCl8/maxresdefault.jpg',

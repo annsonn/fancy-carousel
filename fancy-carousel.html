@@ -65,8 +65,6 @@ Carousel which gives you options for multiple fancy transistions and different w
       }
 
       #content-wrapper ::content > .shift {
-        -webkit-mask: url(animation-sprites/building-sprite.png);
-        mask: url(animation-sprites/building-sprite.png);
         -webkit-mask-size: 7500% 100%;
         mask-size: 7500% 100%;
         -webkit-animation: mask-play 1.4s steps(74) forwards;
@@ -74,12 +72,10 @@ Carousel which gives you options for multiple fancy transistions and different w
       }
 
       #content-wrapper ::content > .collapse {
-        -webkit-mask: url(animation-sprites/building-sprite-2.png);
-        mask: url(animation-sprites/building-sprite-2.png);
-        -webkit-mask-size: 8400% 100%;
-        mask-size: 8400% 100%;
+       -webkit-mask-size: 8400% 100%;
+          mask-size: 8400% 100%;
         -webkit-animation: mask-play 1.4s steps(83) forwards;
-        animation: mask-play 1.4s steps(83) forwards;
+          animation: mask-play 1.4s steps(83) forwards;
       }
 
       @-webkit-keyframes mask-play {
@@ -118,9 +114,11 @@ Carousel which gives you options for multiple fancy transistions and different w
 
       is: 'fancy-carousel',
 
-      isWorking: false,
+      
 
       properties: {
+        _isWorking: false,
+
         selected: {
           observer: '_selectedChanged'
         },
@@ -285,8 +283,8 @@ Carousel which gives you options for multiple fancy transistions and different w
             this.transitionType === 'collapse') {
           this._animateTransition(direction, selected, nextElem);
         } else {
-          if (this.isWorking) return;
-          this.isWorking = true;
+          if (this._isWorking) return;
+          this._isWorking = true;
 
           nextElem.style.zIndex = "50";
 
@@ -302,15 +300,15 @@ Carousel which gives you options for multiple fancy transistions and different w
           this._resetZIndex(Polymer.dom(this).children, selected);
           nextElem.style.zIndex = "100";
 
-          this.isWorking = false;
+          this._isWorking = false;
         }
       },
 
       _animateTransition: function(direction, selected, nextElem) {
         var self = this;
 
-        if (self.isWorking) return;
-        self.isWorking = true;
+        if (self._isWorking) return;
+        self._isWorking = true;
 
         nextElem.style.zIndex = "50";
         selected.className = this.transitionType;
@@ -336,7 +334,7 @@ Carousel which gives you options for multiple fancy transistions and different w
           self._resetZIndex(Polymer.dom(self).children);
           nextElem.style.zIndex = "100";
           self.selected = nextElem;
-          self.isWorking = false;
+          self._isWorking = false;
         }, 1400);
       },
 

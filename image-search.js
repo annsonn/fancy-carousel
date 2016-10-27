@@ -11,22 +11,21 @@ var defaultResults = [
 
 function findImages(searchTerm, searchEngineCx, apiKey, callback) {
     if (!searchTerm) {
-        callback();
-        return;
+        return callback();
     }
     
     var searchUrl = buildSearchUrl(searchTerm, searchEngineCx, apiKey);
     console.log('finding images at: ' + searchUrl);
     if(!doSearch) {
-        callback(defaultResults);
-        return;
+        return callback(defaultResults);
     }
+    
     var xhr = new XMLHttpRequest();
     xhr.open('GET', searchUrl);
     xhr.onload = function() {
         if (xhr.status === 200) {
             var imgUrls = parseImageResults(xhr.responseText);
-            callback(imgUrls);
+            return callback(imgUrls);
         } else {
             console.log('Request failed.  Returned status of ' + xhr.status);
         }

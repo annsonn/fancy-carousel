@@ -12,7 +12,7 @@
   </head>
   <body>
 
-    <test-fixture id="control-test">
+    <test-fixture id="one-image-carousel">
       <template>
         <fancy-carousel>
             <img src="https://app-layout-assets.appspot.com/assets/bg1.jpg">
@@ -20,20 +20,42 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="two-image-carousel">
+      <template>
+        <fancy-carousel>
+            <img id="pic1" src="https://app-layout-assets.appspot.com/assets/bg1.jpg">
+            <img id="pic2" src="https://app-layout-assets.appspot.com/assets/bg2.jpg">
+        </fancy-carousel>
+      </template>
+    </test-fixture>
+
     <script>
-      suite('fancy-carousel', function() {
+        suite('fancy-carousel', function() {
+            test('buttons should be disabled if only 1 picture', function() {
+                var element = fixture('one-image-carousel');
+                assert.equal(element.is, 'fancy-carousel');
+                assert.equal(true, element.$$('#prevBtn').disabled);
+                assert.equal(true, element.$$('#nextBtn').disabled);
+            });
 
-        var element;
-        setup(function(){
-            element = fixture('control-test');
-        });
+            test('next button should change the selected image', function() {
+                var element = fixture('two-image-carousel');
 
-        test('buttons should be disabled if only 1 picture', function() {
-          assert.equal(element.is, 'fancy-carousel');
-          assert.equal(true, element.$$('#prevBtn').disabled);
-          assert.equal(true, element.$$('#nextBtn').disabled);
+                assert.equal("pic1", element.selected.id);
+                element.$$('#nextBtn').click();
+                assert.equal("pic2", element.selected.id);
+            });
+
+            test('prev button should select previous image', function() {
+                var element = fixture('two-image-carousel');
+                element.$$('#nextBtn').click();
+                
+                assert.equal("pic2", element.selected.id);
+                element.$$('#prevBtn').click();
+                assert.equal("pic1", element.selected.id);
+            });
+
         });
-      });
     </script>
   </body>
 </html>

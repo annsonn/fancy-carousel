@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<script src="image-search.js"></script>
 
 <!--
 `fancy-carousel`
@@ -62,6 +63,15 @@ Carousel which gives you options for multiple fancy transistions and different w
         animation: mask-play 1.4s steps(22) forwards;
       }
 
+      #content-wrapper ::content > .paint {
+        -webkit-mask: url(./animation-sprites/urban-sprite.png);
+        mask: url(./animation-sprites/urban-sprite.png);
+        -webkit-mask-size: 3000% 100%;
+        mask-size: 3000% 100%;
+        -webkit-animation: mask-play 1.4s steps(29) forwards;
+        animation: mask-play 1.4s steps(29) forwards;
+      }
+
       @-webkit-keyframes mask-play {
         from {
         -webkit-mask-position: 0% 0;
@@ -105,6 +115,18 @@ Carousel which gives you options for multiple fancy transistions and different w
           observer: '_selectedChanged'
         },
 
+        imageTopic: {
+          type: String
+        },
+
+        searchEngineCx: {
+          type: String
+        },
+
+        apiKey: {
+          type: String
+        },
+
         transitionType: {
           value: 'default',
           type: String,
@@ -143,6 +165,37 @@ Carousel which gives you options for multiple fancy transistions and different w
           this.$.prevBtn.style.display = 'none';
           this.$.nextBtn.style.display = 'none';
         }
+        if (this.imageTopic) {
+          this._loadCustomImages(this.imageTopic);
+        }
+      },
+
+      _loadCustomImages: function(searchTerm) {
+        var that = this;
+        var imgUrls;
+        findImages(searchTerm, this.searchEngineCx, this.apiKey, function(urls) {
+          if (!urls) {
+            console.log('Error loading images');
+            return;
+          }
+          imgUrls = urls;
+          console.log(imgUrls);
+          that._addImageNodes(imgUrls);
+        });
+      },
+
+      _addImageNodes: function(imgUrls) {
+        var numUrls = imgUrls.length;
+        for (var i=0; i<numUrls; i++) {
+          if (!imgUrls[i]) {
+            continue;
+          }
+          var newImage = document.createElement('img');
+          newImage.setAttribute('src', imgUrls[i]);
+          newImage.style.width = '100%';
+          newImage.style.height = '100%';
+          Polymer.dom(this).appendChild(newImage);
+        }
       },
 
       /**
@@ -166,7 +219,9 @@ Carousel which gives you options for multiple fancy transistions and different w
       },
 
       _startTransition: function(direction, selected, nextElem) {
-        if (this.transitionType === 'default'){
+        if (this.transitionType === 'spread' || this.transitionType === 'paint') {
+          this._spread(direction, selected, nextElem);
+        } else {
           if (this.isWorking) return;
           this.isWorking = true;
 
@@ -185,8 +240,6 @@ Carousel which gives you options for multiple fancy transistions and different w
           nextElem.style.zIndex = "100";
 
           this.isWorking = false;
-        } else if (this.transitionType === 'spread') {
-          this._spread(direction, selected, nextElem);
         }
       },
 
@@ -197,7 +250,7 @@ Carousel which gives you options for multiple fancy transistions and different w
         self.isWorking = true;
 
         nextElem.style.zIndex = "50";
-        selected.className = "spread";
+        selected.className = this.transitionType;
         setTimeout(function() {
           selected.className = "";
           self._resetZIndex(Polymer.dom(self).children);

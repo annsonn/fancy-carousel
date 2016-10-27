@@ -16,6 +16,14 @@ Carousel which gives you options for multiple fancy transistions and different w
         display: block;
         position: relative;
         overflow: hidden;
+        width: 100%;
+        contain: content;
+      }
+
+      :host:after {
+        display: block;
+        content: '';
+        padding-top: 75%; /* 4:3 = height is 75% of width */
       }
 
       button {
@@ -76,6 +84,12 @@ Carousel which gives you options for multiple fancy transistions and different w
           mask-size: 8400% 100%;
         -webkit-animation: mask-play 1.4s steps(83) forwards;
           animation: mask-play 1.4s steps(83) forwards;
+      }
+
+      #content-wrapper ::content > img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
       }
 
       @-webkit-keyframes mask-play {

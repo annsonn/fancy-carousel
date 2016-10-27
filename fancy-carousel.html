@@ -49,11 +49,6 @@ Carousel which gives you options for multiple fancy transistions and different w
         opacity: 0.4;
       }
 
-      #content-wrapper {
-        background: url(./animation-sprites/nature-sprite.png) no-repeat -9999px -9999px;
-        background-size: 0;
-      }
-
       #content-wrapper ::content > .spread {
         -webkit-mask: url(./animation-sprites/nature-sprite.png);
         mask: url(./animation-sprites/nature-sprite.png);
@@ -168,6 +163,20 @@ Carousel which gives you options for multiple fancy transistions and different w
         if (this.imageTopic) {
           this._loadCustomImages(this.imageTopic);
         }
+
+        this._preloadAnimationSprites();
+      },
+
+      _preloadAnimationSprites: function() {
+        var dummyDiv1 = document.createElement('div');
+        dummyDiv1.style.backgroundImage = "url('../animation-sprites/nature-sprite.png')";
+        dummyDiv1.style.display = "none";
+        Polymer.dom(this).appendChild(dummyDiv1);
+
+        var dummyDiv2 = document.createElement('div');
+        dummyDiv2.style.backgroundImage = "url('../animation-sprites/urban-sprite.png')";
+        dummyDiv2.style.display = "none";
+        Polymer.dom(this).appendChild(dummyDiv2);
       },
 
       _loadCustomImages: function(searchTerm) {

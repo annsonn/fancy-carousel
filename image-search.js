@@ -1,7 +1,5 @@
-var cx = '005645967951861236861%3A6j9jxysxo4o';
-var key = 'AIzaSyAUpCrlr9RO1EWzbu0DYqBzAQ1yCi2HVrw';
 var searchUrlBefore = 'https://www.googleapis.com/customsearch/v1?q=';
-var searchUrlAfter = '&key=' + key + '&cx=' + cx + '&fileType=jpg,png,bmp&imgColorType=color&num=5';
+var searchUrlAfter = '&fileType=jpg,png,bmp&imgColorType=color&num=5';
 
 var doSearch = false;
 var defaultResults = [
@@ -11,17 +9,18 @@ var defaultResults = [
     'https://i.ytimg.com/vi/mRf3-JkwqfU/hqdefault.jpg'
 ];
 
-function findImages(searchTerm, callback) {
+function findImages(searchTerm, searchEngineCx, apiKey, callback) {
     if (!searchTerm) {
         callback();
         return;
     }
+    
+    var searchUrl = buildSearchUrl(searchTerm, searchEngineCx, apiKey);
+    console.log('finding images at: ' + searchUrl);
     if(!doSearch) {
         callback(defaultResults);
         return;
     }
-    var searchUrl = searchUrlBefore + searchTerm + searchUrlAfter;
-    console.log('finding images at: ' + searchUrl);
     var xhr = new XMLHttpRequest();
     xhr.open('GET', searchUrl);
     xhr.onload = function() {
@@ -33,6 +32,10 @@ function findImages(searchTerm, callback) {
         }
     };
     xhr.send();
+}
+
+function buildSearchUrl(term, cx, key) {
+    return searchUrlBefore + term + '&key=' + key + '&cx=' + cx + searchUrlAfter;
 }
 
 function parseImageResults(responseBody) {

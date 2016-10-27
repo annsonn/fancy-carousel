@@ -72,8 +72,15 @@ Carousel which gives you options for multiple fancy transistions and different w
         },
 
         imageTopic: {
-          type: String,
-          notify: true
+          type: String
+        },
+
+        searchEngineCx: {
+          type: String
+        },
+
+        apiKey: {
+          type: String
         },
 
         transitionType: {
@@ -106,10 +113,9 @@ Carousel which gives you options for multiple fancy transistions and different w
       },
 
       _loadCustomImages: function(searchTerm) {
-        alert('searching for searchTerm: ' + searchTerm);
         var that = this;
         var imgUrls;
-        findImages(searchTerm, function(urls) {
+        findImages(searchTerm, this.searchEngineCx, this.apiKey, function(urls) {
           if (!urls) {
             console.log('Error loading images');
             return;
@@ -123,8 +129,13 @@ Carousel which gives you options for multiple fancy transistions and different w
       _addImageNodes: function(imgUrls) {
         var numUrls = imgUrls.length;
         for (var i=0; i<numUrls; i++) {
+          if (!imgUrls[i]) {
+            continue;
+          }
           var newImage = document.createElement('img');
           newImage.setAttribute('src', imgUrls[i]);
+          newImage.style.width = '100%';
+          newImage.style.height = '100%';
           Polymer.dom(this).appendChild(newImage);
         }
       },

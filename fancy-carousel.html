@@ -96,15 +96,16 @@ Carousel which gives you options for multiple fancy transistions and different w
       },
 
       _startTransition: function(direction, selected, nextElem) {
-        var oldSelected = selected;
-        this._translateX(oldSelected, 0);
-        this._translateX(nextElem, this.offsetWidth*direction);
+        if (this.transitionType === 'default'){
+          var oldSelected = selected;
+          this._translateX(oldSelected, 0);
+          this._translateX(nextElem, this.offsetWidth*direction);
 
-        // Start the transition
-        this.selected = nextElem;
-        this._translateX(oldSelected, -this.offsetWidth*direction, true /* transition */);
-        this._translateX(nextElem, 0, true /* transition */);
-
+          // Start the transition
+          this.selected = nextElem;
+          this._translateX(oldSelected, -this.offsetWidth*direction, true /* transition */);
+          this._translateX(nextElem, 0, true /* transition */);
+        }
       },
 
       _installListeners: function() {

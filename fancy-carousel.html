@@ -125,7 +125,9 @@ Carousel which gives you options for multiple fancy transistions and different w
       attached: function()  {
         this._resetZIndex(Polymer.dom(this).children);
         this.selected = Polymer.dom(this).firstElementChild;
-        this.selected.style.zIndex = "100";
+        if (this.selected) {
+          this.selected.style.zIndex = "100";
+        }
         if (this.noControls) {
           this.$.prevBtn.style.display = 'none';
           this.$.nextBtn.style.display = 'none';

@@ -24,3 +24,18 @@ Carousel which gives you options for multiple fancy transistions and different w
 | searchEngineCx  | String  | CX key for Google                                                                        |
 | transitionTimer | Number  | Timer for transitioning to the next slide                                                |
 | transitionType  | String  | Type of transition animation (Currently available types: spread, paint, shift, collapse) |
+
+
+## Running 
+Use the 'polymer-cli' to test/demo component
+
+### To Demo/Test Component
+```
+polymer serve
+```
+Then go to 'localhost:8080/components/fancy-carousel' to view component
+
+### To run tests:
+```
+polymer test
+```

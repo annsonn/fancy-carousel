@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="fancy-carousel-behaviour.html">
+<link rel="import" href="fancy-carousel-shared-styles.html">
 <script src="image-search.js"></script>
 
 
@@ -12,7 +13,7 @@ Carousel which gives you options for multiple fancy transistions and different w
 
 <dom-module id="fancy-carousel">
   <template>
-    <style>
+    <style include="fancy-carousel-shared-styles">
       :host {
         display: block;
         position: relative;
@@ -27,24 +28,6 @@ Carousel which gives you options for multiple fancy transistions and different w
         padding-top: 75%; /* 4:3 = height is 75% of width */
       }
 
-      button {
-        position: absolute;
-        top: calc(50% - 20px);
-        padding: 0;
-        line-height: 40px;
-        border: none;
-        background: none;
-        color: #DDD;
-        font-size: 40px;
-        font-weight: bold;
-        opacity: 0.7;
-      }
-
-      button:hover,
-      button:focus {
-        opacity: 1;
-      }
-
       #prevBtn {
         left: 12px;
         z-index: 1000;
@@ -53,66 +36,6 @@ Carousel which gives you options for multiple fancy transistions and different w
       #nextBtn {
         right: 12px;
         z-index: 1000;
-      }
-
-      button[disabled] {
-        opacity: 0.4;
-      }
-
-      #content-wrapper ::content > .spread {
-        -webkit-mask-size: 2300% 100%;
-        mask-size: 2300% 100%;
-        -webkit-animation: mask-play 1.4s steps(22) forwards;
-        animation: mask-play 1.4s steps(22) forwards;
-      }
-
-      #content-wrapper ::content > .paint {
-        -webkit-mask-size: 3000% 100%;
-        mask-size: 3000% 100%;
-        -webkit-animation: mask-play 1.4s steps(29) forwards;
-        animation: mask-play 1.4s steps(29) forwards;
-      }
-
-      #content-wrapper ::content > .shift {
-        -webkit-mask-size: 7500% 100%;
-        mask-size: 7500% 100%;
-        -webkit-animation: mask-play 1.4s steps(74) forwards;
-        animation: mask-play 1.4s steps(74) forwards;
-      }
-
-      #content-wrapper ::content > .collapse {
-       -webkit-mask-size: 8400% 100%;
-          mask-size: 8400% 100%;
-        -webkit-animation: mask-play 1.4s steps(83) forwards;
-          animation: mask-play 1.4s steps(83) forwards;
-      }
-
-      #content-wrapper ::content > img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-
-      @-webkit-keyframes mask-play {
-        from {
-        -webkit-mask-position: 0% 0;
-        mask-position: 0% 0;
-        }
-        to {
-        -webkit-mask-position: 100% 0;
-        mask-position: 100% 0;
-        }
-      }
-
-      @keyframes mask-play {
-        from {
-        -webkit-mask-position: 0% 0;
-        mask-position: 0% 0;
-        }
-        to {
-        -webkit-mask-position: 100% 0;
-        mask-position: 100% 0;
-        }
       }
     </style>
 
@@ -137,30 +60,24 @@ Carousel which gives you options for multiple fancy transistions and different w
         selected: {
           observer: '_selectedChanged'
         },
-
         imageTopic: {
           type: String
         },
-
         searchEngineCx: {
           type: String
         },
-
         apiKey: {
           type: String
         },
-
         transitionType: {
           value: 'default',
           type: String,
           notify: true
         },
-
         noControls: {
           type: Boolean,
           value: false
         },
-
         transitionTimer: {
           type: Number,
           value: 0,

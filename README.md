@@ -1,5 +1,6 @@
 # \<fancy-carousel\>
 
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/annsonn/fancy-carousel)
 [![Build Status](https://travis-ci.org/annsonn/fancy-carousel.png?branch=master)](https://travis-ci.org/annsonn/fancy-carousel)
 [![Issue Count](https://codeclimate.com/github/annsonn/fancy-carousel/badges/issue_count.svg)](https://codeclimate.com/github/annsonn/fancy-carousel)
 

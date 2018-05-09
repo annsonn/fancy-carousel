@@ -4,14 +4,17 @@
     <title>fancy-carousel demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
     <link rel="import" href="../fancy-carousel.html">
 
-    <style is="custom-style" include="demo-pages-shared-styles"></style>
+    <custom-style>
+        <style is="custom-style" include="demo-pages-shared-styles">
+        </style>
+      </custom-style>
   </head>
   <body>
 
@@ -31,11 +34,10 @@
       <h3>Dynamic Search fancy-carousel Demo</h3>
       <demo-snippet>
         <template>
-          <fancy-carousel image-topic="hackathon"
+          <fancy-carousel image-topic="puppies"
                     search-engine-cx="005645967951861236861%3A6j9jxysxo4o"
                     api-key="AIzaSyAUpCrlr9RO1EWzbu0DYqBzAQ1yCi2HVrw">
             <img src="https://app-layout-assets.appspot.com/assets/bg1.jpg">
-            <img src="https://app-layout-assets.appspot.com/assets/bg2.jpg">
           </fancy-carousel>
         </template>
       </demo-snippet>

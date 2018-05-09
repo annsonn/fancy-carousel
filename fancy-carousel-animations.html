@@ -1,33 +1,32 @@
-
-<link rel="import" href="../polymer/polymer.html">
-
 <script>
-  /** @polymerBehavior Polymer.FancyCarouselAnimationBehaviour */
-  Polymer.FancyCarouselAnimationBehaviourImpl = {
-    properties: {
-        _isWorking: false,
-    },
+  FancyCarouselAnimations = (superClass) => class extends superClass {
+  
+    ready() {
+      this.addEventListener('transitionend', this._resetChildrenStyles);
+      this.addEventListener('touchstart', this._touchstart);
+      this.addEventListener('touchmove', this._touchmove);
+      this.addEventListener('touchend', this._touchend);
 
-    observers: [
-    ],
+      super.ready();
+    }
 
-    _getNatureSpriteUrl: function() {
+    _getNatureSpriteUrl() {
         return "url('" + this.resolveUrl('images/nature-sprite.png') + "')";
-    },
+    }
 
-    _getUrbanSpriteUrl: function() {
+    _getUrbanSpriteUrl() {
         return "url('" + this.resolveUrl('images/urban-sprite.png') + "')";
-    },
+    }
 
-    _getShiftSpriteUrl: function() {
+    _getShiftSpriteUrl() {
         return "url('" + this.resolveUrl('images/building-sprite.png') + "')";
-    },
+    }
 
-    _getCollaspeSpriteUrl: function() {
+    _getCollaspeSpriteUrl() {
         return "url('" + this.resolveUrl('images/building-sprite-2.png') + "')";
-    },
+    }
 
-    _preloadAnimationSprites: function() {
+    _preloadAnimationSprites() {
         var dummyDiv1 = document.createElement('div');
         dummyDiv1.style.backgroundImage = this._getNatureSpriteUrl();
         dummyDiv1.style.visibility = "hidden";
@@ -51,9 +50,9 @@
         dummyDiv4.style.visibility = "hidden";
         dummyDiv4.setAttribute("class", "dummy");
         Polymer.dom(this).appendChild(dummyDiv4);
-    },
+    }
 
-    _resetZIndex: function(elements, current) {
+    _resetZIndex(elements, current) {
         for (var i = 0; i < elements.length; i++) {
           if (current && current.src === elements[i].src) {
             elements[i].style.zIndex = "2";
@@ -61,9 +60,9 @@
             elements[i].style.zIndex = "1";
           }
         }
-    },
+    }
 
-    _startTransition: function(direction, selected, nextElem) {
+    _startTransition(direction, selected, nextElem) {
         if (this.transitionType === 'spread' ||
             this.transitionType === 'paint' ||
             this.transitionType === 'shift' ||
@@ -89,9 +88,9 @@
 
           this._isWorking = false;
         }
-      },
+      }
 
-      _animateTransition: function(direction, selected, nextElem) {
+      _animateTransition(direction, selected, nextElem) {
         var self = this;
 
         if (self._isWorking) return;
@@ -123,16 +122,9 @@
           self.selected = nextElem;
           self._isWorking = false;
         }, 1400);
-      },
+      }
 
-      listeners: {
-        'transitionend': '_resetChildrenStyles',
-        'touchstart': '_touchstart',
-        'touchmove': '_touchmove',
-        'touchend': '_touchend'
-      },
-
-      _resetChildrenStyles: function() {
+      _resetChildrenStyles() {
         var elem = this.firstElementChild;
         while (elem) {
           elem.style.display = '';
@@ -140,15 +132,15 @@
           elem.style.transform = '';
           elem = elem.nextElementSibling;
         }
-      },
+      }
 
-      _translateX: function(elem, x, transition) {
+      _translateX(elem, x, transition) {
         elem.style.display = 'block';
         elem.style.transition = transition ? 'transform 0.2s' : '';
         elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
-      },
+      }
 
-      _touchstart: function(event) {
+      _touchstart(event) {
         // No transition if less than two images
         if (this.childElementCount < 2) {
           return;
@@ -159,9 +151,9 @@
           this._startX = event.changedTouches[0].clientX;
           this._startY = event.changedTouches[0].clientY;
         }
-      },
+      }
 
-      _touchmove: function(event) {
+      _touchmove(event) {
         // No transition if less than two images
         if (this.childElementCount < 2) {
           return;
@@ -195,9 +187,9 @@
             this._translateX(nextChild, dx + this.offsetWidth);
           }
         }
-      },
+      }
 
-      _touchend: function(event) {
+      _touchend(event) {
         // No transition if less than two images
         if (this.childElementCount < 2) {
           return;
@@ -266,9 +258,4 @@
       }
     
   };
-
-  /** @polymerBehavior */
-  Polymer.FancyCarouselAnimationBehaviour = [
-    Polymer.FancyCarouselAnimationBehaviourImpl
-  ];
 </script>

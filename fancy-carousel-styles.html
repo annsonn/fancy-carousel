@@ -1,4 +1,4 @@
-<dom-module id="fancy-carousel-shared-styles">
+<dom-module id="fancy-carousel-styles">
   <template>
     <style>
       button {
@@ -23,35 +23,35 @@
         opacity: 0.4;
       }
 
-      #content-wrapper ::content > .spread {
+      #content-wrapper ::slotted(.spread)  {
         -webkit-mask-size: 2300% 100%;
         mask-size: 2300% 100%;
         -webkit-animation: mask-play 1.4s steps(22) forwards;
         animation: mask-play 1.4s steps(22) forwards;
       }
 
-      #content-wrapper ::content > .paint {
+      #content-wrapper ::slotted(.paint) {
         -webkit-mask-size: 3000% 100%;
         mask-size: 3000% 100%;
         -webkit-animation: mask-play 1.4s steps(29) forwards;
         animation: mask-play 1.4s steps(29) forwards;
       }
 
-      #content-wrapper ::content > .shift {
+      #content-wrapper ::slotted(.shift) {
         -webkit-mask-size: 7500% 100%;
         mask-size: 7500% 100%;
         -webkit-animation: mask-play 1.4s steps(74) forwards;
         animation: mask-play 1.4s steps(74) forwards;
       }
 
-      #content-wrapper ::content > .collapse {
-       -webkit-mask-size: 8400% 100%;
+      #content-wrapper ::slotted(.collapse) {
+      -webkit-mask-size: 8400% 100%;
           mask-size: 8400% 100%;
         -webkit-animation: mask-play 1.4s steps(83) forwards;
           animation: mask-play 1.4s steps(83) forwards;
       }
 
-      #content-wrapper ::content > img {
+      #content-wrapper ::slotted(img) {
         position: absolute;
         width: 100%;
         height: 100%;

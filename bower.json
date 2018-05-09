@@ -1,18 +1,21 @@
 {
   "name": "fancy-carousel",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Carousel which gives you options for multiple fancy transistions and different ways to include images.",
   "main": "fancy-carousel.html",
   "keywords": [
     "web-components", "polymer", "carousel", "fancy"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^2.0.0"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+    "iron-component-page": "PolymerElements/iron-component-page#2.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
   }
 }

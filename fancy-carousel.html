@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
 <link rel="import" href="fancy-carousel-animations.html">
 <link rel="import" href="fancy-carousel-behaviour.html">
 <link rel="import" href="fancy-carousel-styles.html">
@@ -86,20 +87,21 @@
 
       connectedCallback() {
         super.connectedCallback();
-        this._resetZIndex(Polymer.dom(this).children);
-        this.selected = Polymer.dom(this).querySelectorAll('img')[0];
-        if (this.selected) {
-          this.selected.style.zIndex = "100";
-        }
-        if (this.noControls) {
-          this.$.prevBtn.style.display = 'none';
-          this.$.nextBtn.style.display = 'none';
-        }
-        if (this.imageTopic) {
-          this._loadCustomImages(this.imageTopic);
-        }
-
-        this._preloadAnimationSprites();
+        
+        Polymer.RenderStatus.beforeNextRender(this, function() {
+          this._resetZIndex(Polymer.dom(this).children);
+          this.selected = Polymer.dom(this).querySelectorAll('img')[0];
+          if (this.selected) {
+            this.selected.style.zIndex = "100";
+          }
+          if (this.noControls) {
+            this.$.prevBtn.style.display = 'none';
+            this.$.nextBtn.style.display = 'none';
+          }
+          if (this.imageTopic) {
+            this._loadCustomImages(this.imageTopic);
+          }
+        });
       }
       
       /**

@@ -1,18 +1,10 @@
-
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="fancy-carousel-animation-behaviour.html">
+<link rel="import" href="fancy-carousel-animations.html">
 <script src="image-search.js"></script>
 
 <script>
-  /** @polymerBehavior Polymer.FancyCarouselBehaviour */
-  Polymer.FancyCarouselBehaviourImpl = {
-    properties: {
-    },
+  FancyCarouselBehaviour = (base) => class extends FancyCarouselAnimations(base) {
 
-    observers: [
-    ],
-
-    _loadCustomImages: function(searchTerm) {
+    _loadCustomImages(searchTerm) {
         var that = this;
         var imgUrls;
         findImages(searchTerm, this.searchEngineCx, this.apiKey, function(urls) {
@@ -24,9 +16,9 @@
             console.log(imgUrls);
             that._addImageNodes(imgUrls);
         });
-    },
+    }
 
-    _addImageNodes: function(imgUrls) {
+    _addImageNodes(imgUrls) {
         var numUrls = imgUrls.length;
         for (var i=0; i<numUrls; i++) {
             if (!imgUrls[i]) {
@@ -38,9 +30,9 @@
             newImage.style.height = '100%';
             Polymer.dom(this).appendChild(newImage);
         }
-    },
+    }
 
-    _getNextElement: function() {
+    _getNextElement() {
         var elem = this.selected.nextElementSibling;
         while (elem && elem.getAttribute("class") === "dummy") {
             elem = elem.nextElementSibling;
@@ -49,18 +41,18 @@
             elem = Polymer.dom(this).querySelectorAll('img')[0];
         }
         return elem;
-    },
+    }
 
-      _timerChanged: function(newValue, oldValue) {
+      _timerChanged(newValue, oldValue) {
         var that = this;
         if (newValue != 0) {
           setInterval(function() {
             that.next();
           }, newValue*1000);
         }
-      },
+      }
 
-      _selectedChanged: function(selected, oldSelected) {
+      _selectedChanged(selected, oldSelected) {
         if (oldSelected) {
           oldSelected.removeAttribute('selected');
         }
@@ -73,19 +65,12 @@
           this._loadImage(selected.previousElementSibling);
           this._loadImage(selected.nextElementSibling);
         }
+      }
 
-      },
-
-      _loadImage: function(img) {
+      _loadImage(img) {
         if (img && !img.src) {
           img.src = img.getAttribute('data-src');
         }
       }
-  };
-
-  /** @polymerBehavior */
-  Polymer.FancyCarouselBehaviour = [
-    Polymer.FancyCarouselBehaviourImpl,
-    Polymer.FancyCarouselAnimationBehaviour
-  ];
+  }
 </script>

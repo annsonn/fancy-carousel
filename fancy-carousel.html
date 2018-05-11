@@ -1,20 +1,15 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
+<link rel="import" href="fancy-carousel-animations.html">
 <link rel="import" href="fancy-carousel-behaviour.html">
-<link rel="import" href="fancy-carousel-shared-styles.html">
-
-<!--
-`fancy-carousel`
-Carousel which gives you options for multiple fancy transistions and different ways to include images.
-
-@demo demo/index.html
--->
+<link rel="import" href="fancy-carousel-styles.html">
 
 <dom-module id="fancy-carousel">
   <template>
-    <style include="fancy-carousel-shared-styles">
+    <style include="fancy-carousel-styles">
       :host {
         display: block;
-        position: relative;
+        position: relative; 
         overflow: hidden;
         width: 100%;
         contain: content;
@@ -34,95 +29,118 @@ Carousel which gives you options for multiple fancy transistions and different w
       #nextBtn {
         right: 12px;
         z-index: 1000;
-      }
+      }      
     </style>
 
-    <div id="content-wrapper">
-      <content></content>
+    <div id="inputWrapper">
+      <slot></slot>
     </div>
+
+    <div id="contentWrapper"></div>
 
     <button id="prevBtn" on-click="previous">❮</button>
     <button id="nextBtn" on-click="next">❯</button>
+    
   </template>
 
   <script>
-    Polymer({
+    /**
+     * `fancy-carousel`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+     
+    class FancyCarousel extends FancyCarouselBehaviour(Polymer.Element) {
+      static get is() { return 'fancy-carousel'}
 
-      is: 'fancy-carousel',
-
-      behaviors: [
-        Polymer.FancyCarouselBehaviour
-      ],
-
-      properties: {
-        selected: {
-          observer: '_selectedChanged'
-        },
-        imageTopic: {
-          type: String
-        },
-        searchEngineCx: {
-          type: String
-        },
-        apiKey: {
-          type: String
-        },
-        transitionType: {
-          value: 'default',
-          type: String,
-          notify: true
-        },
-        noControls: {
-          type: Boolean,
-          value: false
-        },
-        transitionTimer: {
-          type: Number,
-          value: 0,
-          observer: '_timerChanged'
+      static get properties() {
+        return {
+          selected: {
+            observer: '_selectedChanged'
+          },
+          imageTopic: {
+            type: String
+          },
+          searchEngineCx: {
+            type: String
+          },
+          apiKey: {
+            type: String
+          },
+          transitionType: {
+            value: 'default',
+            type: String,
+            notify: true
+          },
+          noControls: {
+            type: Boolean,
+            value: false
+          },
+          transitionTimer: {
+            type: Number,
+            value: 0,
+            observer: '_timerChanged'
+          }
         }
-      },
+      }
 
-      attached: function()  {
-        this._resetZIndex(Polymer.dom(this).children);
-        this.selected = Polymer.dom(this).querySelectorAll('img')[0];
-        if (this.selected) {
-          this.selected.style.zIndex = "100";
-        }
-        if (this.noControls) {
-          this.$.prevBtn.style.display = 'none';
-          this.$.nextBtn.style.display = 'none';
-        }
-        if (this.imageTopic) {
-          this._loadCustomImages(this.imageTopic);
-        }
+      connectedCallback() {
+        super.connectedCallback();
+        
+        Polymer.RenderStatus.beforeNextRender(this, function() {
+          this.$.inputWrapper.style.display = 'none';
+          var contentWrapperElement = this.$.contentWrapper;
 
-        this._preloadAnimationSprites();
-      },
+          var images = Polymer.dom(this).querySelectorAll('img');
 
+          images.forEach(imgElement => {
+            var newImage = document.createElement('img');
+            newImage.src = imgElement.src;
+            contentWrapperElement.appendChild(newImage);
+          });          
+
+          this._resetZIndex(Polymer.dom(this).children);
+          this.selected = contentWrapperElement.querySelectorAll('img')[0];
+          if (this.selected) {
+            this.selected.style.zIndex = "100";
+          }
+          if (this.noControls) {
+            this.$.prevBtn.style.display = 'none';
+            this.$.nextBtn.style.display = 'none';
+          }
+          if (this.imageTopic) {
+            this._loadCustomImages(this.imageTopic);
+          }
+        });
+      }
+      
       /**
       * Changes the carousel to the previous image
       */
-      previous: function() {
+      previous() {
         var elem = this.selected.previousElementSibling;
-        while (elem && elem.getAttribute("class") === "dummy") {
+        while (elem && elem.getAttribute("class") === "preloaded-sprite") {
           elem = elem.previousElementSibling;
         }
         if (elem && !this._touchDir) {
           this._startTransition(-1, this.selected, elem);
         }
-      },
+      }
 
       /**
       * Changes the carousel to the next image
       */
-      next: function() {
+      next() {
         var elem = this._getNextElement();
-        if (elem && !this._touchDir) {
+        if (elem && !this._touchDir && elem.getAttribute("class") !== "preloaded-sprite") {
           this._startTransition(1, this.selected, elem);
         }
-      },
-
-    });
+      }
+    }
+    
+    customElements.define(FancyCarousel.is, FancyCarousel);
   </script>
 </dom-module>

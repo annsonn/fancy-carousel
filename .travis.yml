@@ -1,12 +1,12 @@
 language: node_js
 sudo: required
 before_script:
-- npm install -g bower polylint web-component-tester 
-- bower install
+- npm install -g bower polylint polymer-cli 
+- polymer install
 - polylint
 node_js: stable
 addons:
-  firefox: '46'
+  firefox: 'latest'
   codeclimate:
     repo_token: f3f514915d46237814d41224645d066b73d6f57bfbdf5d914f15419120ab51cf
   apt:
@@ -16,7 +16,7 @@ addons:
     - google-chrome-stable
   sauce_connect: true
 script:
-- xvfb-run wct
+- polymer test
 after_script:
 - codeclimate-test-reporter < lcov.info
 dist: trusty

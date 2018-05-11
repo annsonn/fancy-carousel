@@ -23,34 +23,38 @@
         opacity: 0.4;
       }
 
-      #content-wrapper ::slotted(.spread)  {
-        -webkit-animation: mask-play 1.4s steps(22) forwards;
-        animation: mask-play 1.4s steps(22) forwards;
+      #inputWrapper {
+        visibility: hidden;
       }
 
-      #content-wrapper ::slotted(.paint) {
-        -webkit-animation: mask-play 1.4s steps(29) forwards;
-        animation: mask-play 1.4s steps(29) forwards;
+      #contentWrapper .spread {
+        -webkit-animation: 1.4s steps(22) forwards;
+        animation: 1.4s steps(22) forwards;
       }
 
-      #content-wrapper ::slotted(.shift) {
-        -webkit-animation: mask-play 1.4s steps(74) forwards;
-        animation: mask-play 1.4s steps(74) forwards;
+      #contentWrapper .paint {
+        -webkit-animation: 1.4s steps(29) forwards;
+        animation: 1.4s steps(29) forwards;
       }
 
-      #content-wrapper ::slotted(.collapse) {
-        -webkit-animation: mask-play 1.4s steps(83) forwards;
-        animation: mask-play 1.4s steps(83) forwards;
+      #contentWrapper .shift {
+        -webkit-animation: 1.4s steps(74) forwards;
+        animation: 1.4s steps(74) forwards;
       }
 
-      #content-wrapper ::slotted(img) {
+      #contentWrapper .collapse {
+        -webkit-animation: 1.4s steps(83) forwards;
+        animation: 1.4s steps(83) forwards;
+      }
+
+      #contentWrapper img {
         -webkit-mask-size: contain;
         mask-size: contain;
         position: absolute;
         width: 100%;
         height: 100%;
       }
-
+      
       @-webkit-keyframes mask-play {
         from {
         -webkit-mask-position: 0% 0;

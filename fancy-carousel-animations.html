@@ -46,6 +46,7 @@
         spriteElem.style.backgroundImage = this._getCollaspeSpriteUrl();
       }
         
+      spriteElem.className = "preloaded-sprite";
       spriteElem.style.visibility = "hidden";
       Polymer.dom(this).appendChild(spriteElem);
     }
@@ -108,10 +109,10 @@
           spriteUrl = this._getShiftSpriteUrl();
         }
 
-        self._updateSelectedStyles(selected, this.transitionType, spriteUrl, '1400ms', '0ms');
+        self._updateSelectedStyles(selected, this.transitionType, spriteUrl, '1400ms', '0ms', 'mask-play');
 
         setTimeout(function() {
-          self._updateSelectedStyles(selected, '', '', '', '');
+          self._updateSelectedStyles(selected, '', '', '', '', '');
           
           selected.style.zIndex = "10";
           nextElem.style.zIndex = "30"
@@ -121,11 +122,12 @@
         }, 1400);
       }
 
-      _updateSelectedStyles(element, className, spriteUrl, animationDuration, animationDelay) {
+      _updateSelectedStyles(element, className, spriteUrl, animationDuration, animationDelay, animationName) {
         element.className = className;
         element.style.mask = spriteUrl;
         element.style.webkitMask = spriteUrl;
         element.style.webkitMaskImage = spriteUrl;
+        element.style.animationName = animationName;
       }
 
       _resetChildrenStyles() {

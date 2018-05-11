@@ -32,9 +32,11 @@
       }      
     </style>
 
-    <div id="content-wrapper">
+    <div id="inputWrapper">
       <slot></slot>
     </div>
+
+    <div id="contentWrapper"></div>
 
     <button id="prevBtn" on-click="previous">❮</button>
     <button id="nextBtn" on-click="next">❯</button>
@@ -89,8 +91,19 @@
         super.connectedCallback();
         
         Polymer.RenderStatus.beforeNextRender(this, function() {
+          this.$.inputWrapper.style.display = 'none';
+          var contentWrapperElement = this.$.contentWrapper;
+
+          var images = Polymer.dom(this).querySelectorAll('img');
+
+          images.forEach(imgElement => {
+            var newImage = document.createElement('img');
+            newImage.src = imgElement.src;
+            contentWrapperElement.appendChild(newImage);
+          });          
+
           this._resetZIndex(Polymer.dom(this).children);
-          this.selected = Polymer.dom(this).querySelectorAll('img')[0];
+          this.selected = contentWrapperElement.querySelectorAll('img')[0];
           if (this.selected) {
             this.selected.style.zIndex = "100";
           }
@@ -109,7 +122,7 @@
       */
       previous() {
         var elem = this.selected.previousElementSibling;
-        while (elem && elem.getAttribute("class") === "dummy") {
+        while (elem && elem.getAttribute("class") === "preloaded-sprite") {
           elem = elem.previousElementSibling;
         }
         if (elem && !this._touchDir) {
@@ -122,7 +135,7 @@
       */
       next() {
         var elem = this._getNextElement();
-        if (elem && !this._touchDir) {
+        if (elem && !this._touchDir && elem.getAttribute("class") !== "preloaded-sprite") {
           this._startTransition(1, this.selected, elem);
         }
       }
